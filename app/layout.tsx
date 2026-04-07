@@ -15,8 +15,6 @@
 //
 
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 // CSS
 import "@/webfonts/fa.all.min.css";
 import "@app/globals.css";
@@ -25,7 +23,8 @@ import "@pond/pond.css";
 
 export const metadata: Metadata = {
     title: "Pond Extended",
-    description: "Extended Blockly Games' Pond game which supports multiplayer.",
+    description:
+        "Extended Blockly Games' Pond game which supports multiplayer.",
 };
 
 export default function RootLayout({
@@ -35,11 +34,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>
-                {children}
-                <Analytics />
-                <SpeedInsights />
-            </body>
+            <body>{children}</body>
         </html>
     );
 }

@@ -22,8 +22,6 @@
     "@codemirror/view": "^6.36.2",
     "@uiw/codemirror-theme-vscode": "^4.23.7",
     "@uiw/react-codemirror": "^4.23.7",
-    "@vercel/analytics": "^1.4.1",
-    "@vercel/speed-insights": "^1.1.0",
     "clsx": "^2.1.1",
     "codemirror": "^6.0.1",
     "eslint-linter-browserify": "^9.18.0",
