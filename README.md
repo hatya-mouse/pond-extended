@@ -12,7 +12,7 @@
 
 Example Pond script can be found in [my repository](https://github.com/hatya-mouse/pond-examples/).
 
-Play now at [https://pond-extended.vercel.app](https://pond-extended.vercel.app/)
+Play now at [https://pond-extended.vercel.app](https://pond-extended.hatya.dev/)
 
 ## Features
 
