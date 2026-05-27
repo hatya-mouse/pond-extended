@@ -1,62 +1,40 @@
 {
-    "compilerOptions": {
-        "target": "ES2017",
-        "lib": [
-            "dom",
-            "dom.iterable",
-            "esnext"
-        ],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "noEmit": true,
-        "esModuleInterop": true,
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "jsx": "preserve",
-        "incremental": true,
-        "plugins": [
-            {
-                "name": "next"
-            }
-        ],
-        "paths": {
-            "@/*": [
-                "./*"
-            ],
-            "@components/*": [
-                "./app/ui/components/*"
-            ],
-            "@pond/*": [
-                "./app/ui/pond/*"
-            ],
-            "@pond-game/*": [
-                "./app/pond-game/*"
-            ],
-            "@utils/*": [
-                "./app/utils/*"
-            ],
-            "@sfx/*": [
-                "./sfx/*"
-            ],
-            "@app/*": [
-                "./app/*"
-            ],
-            "@pond-core/*": [
-                "./app/pond-game/pond/*"
-            ]
-        }
-    },
-    "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        ".next/types/**/*.ts",
-        "app/types/duck.js"
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next",
+      },
     ],
-    "exclude": [
-        "node_modules"
-    ]
+    "paths": {
+      "@/*": ["./*"],
+      "@components/*": ["./app/ui/components/*"],
+      "@pond/*": ["./app/ui/pond/*"],
+      "@pond-game/*": ["./app/pond-game/*"],
+      "@utils/*": ["./app/utils/*"],
+      "@sfx/*": ["./sfx/*"],
+      "@app/*": ["./app/*"],
+      "@pond-core/*": ["./app/pond-game/pond/*"],
+    },
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/types/duck.js",
+  ],
+  "exclude": ["node_modules"],
 }
