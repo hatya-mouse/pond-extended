@@ -161,10 +161,22 @@ export default function Home() {
             const file = input.files[0];
             // Get the data.
             const jsonData = await file.text();
-            // Load the data using PondDataLoader.
-            const data = PondDataLoader.load(jsonData);
-            // Get the settings.
-            updateSettings(data.settings);
+
+            try {
+                // Load the data using PondDataLoader.
+                const data = PondDataLoader.load(jsonData);
+
+                // Open the code of the first duck in the editor.
+                setSelectedDuckData(data.settings.ducks[0]);
+                // Get the settings.
+                updateSettings(data.settings);
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    alert(
+                        `Failed to load the battle data. Error: ${error.message}`,
+                    );
+                }
+            }
         };
         // Click the input.
         input.click();

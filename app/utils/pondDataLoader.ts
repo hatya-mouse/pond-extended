@@ -96,7 +96,6 @@ function validateSettings(settings: unknown): settings is PondSettings {
 function validatePondData(data: unknown): data is PondData {
     if (!data || typeof data !== "object") {
         throw new Error("Data must be an object");
-        return false;
     }
 
     // Type assertion with type predicate for type-safe property access
@@ -104,8 +103,13 @@ function validatePondData(data: unknown): data is PondData {
     // Check for settings.
     if (!validateSettings(d.settings)) {
         throw new Error("Invalid settings structure");
-        return false;
     }
+
+    // Check if the data contains more than two ducks.
+    if (d.settings.ducks.length < 2) {
+        throw new Error("At least two ducks are required");
+    }
+
     // Return true if successful.
     return true;
 }
