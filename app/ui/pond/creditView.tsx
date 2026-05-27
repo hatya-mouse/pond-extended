@@ -14,11 +14,9 @@
 // limitations under the License.
 //
 
-// Link
 import Link from "next/link";
-// CLSX
+import Image from "next/image";
 import clsx from "clsx";
-// Components
 import IconButton from "../components/iconButton";
 
 export default function CreditView({
@@ -165,7 +163,7 @@ export default function CreditView({
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        <img
+                        <Image
                             alt="Pond Extended - Simple duck fighting game for programming beginners | Product Hunt"
                             width="250"
                             height="54"
