@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,13 +17,21 @@
 // React
 import { useCallback, useEffect, useRef, useMemo, useState } from "react";
 // CodeMirror
-import ReactCodeMirror from "@uiw/react-codemirror"
+import ReactCodeMirror from "@uiw/react-codemirror";
 import { basicSetup } from "codemirror";
-import { javascript, javascriptLanguage, esLint } from "@codemirror/lang-javascript";
+import {
+    javascript,
+    javascriptLanguage,
+    esLint,
+} from "@codemirror/lang-javascript";
 import { scrollPastEnd } from "@codemirror/view";
-import { CompletionContext, Completion, snippetCompletion as snip } from "@codemirror/autocomplete";
+import {
+    CompletionContext,
+    Completion,
+    snippetCompletion as snip,
+} from "@codemirror/autocomplete";
 import { linter, lintGutter } from "@codemirror/lint";
-import { vscodeDark, vscodeLight } from '@uiw/codemirror-theme-vscode';
+import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
 import * as esLintBrowserify from "eslint-linter-browserify";
 // Formatter WebWorker
 import { FormatRequest, FormatResponse } from "@app/utils/editorDoWork";
@@ -40,20 +48,24 @@ const cmExtensions = [
     scrollPastEnd(),
     javascript(),
     lintGutter(),
-    linter(esLint(new esLintBrowserify.Linter(), { // ESLint configurations.
-        languageOptions: {
-            parserOptions: {
-                ecmaVersion: "latest",
-                sourceType: "module",
+    linter(
+        esLint(new esLintBrowserify.Linter(), {
+            // ESLint configurations.
+            languageOptions: {
+                parserOptions: {
+                    ecmaVersion: "latest",
+                    sourceType: "module",
+                },
             },
-        },
-    })),
+        }),
+    ),
     javascriptLanguage.data.of({
         autocomplete: pondCompletion,
-    })
+    }),
 ];
 
-if (typeof window !== 'undefined') { // Check if we're running in the browser.
+if (typeof window !== "undefined") {
+    // Check if we're running in the browser.
     // Initialize completions.
     initCompletions();
 }
@@ -61,17 +73,17 @@ if (typeof window !== 'undefined') { // Check if we're running in the browser.
 export default function Editor({
     className = "",
     settings,
-    setDoc = () => { },
-    onToggleView = () => { },
+    setDoc = () => {},
+    onToggleView = () => {},
     darkMode = false,
     selectedDuckData,
 }: {
-    className?: string,
-    settings: PondSettings,
-    setDoc?: (doc: string, duck: DuckData) => void,
-    onToggleView?: (_: string) => void,
-    darkMode?: boolean,
-    selectedDuckData: DuckData,
+    className?: string;
+    settings: PondSettings;
+    setDoc?: (doc: string, duck: DuckData) => void;
+    onToggleView?: (_: string) => void;
+    darkMode?: boolean;
+    selectedDuckData: DuckData;
 }) {
     const worker = useRef<Worker | undefined>(undefined);
     const [editorDoc, setEditorDoc] = useState(selectedDuckData.script);
@@ -80,10 +92,13 @@ export default function Editor({
         setEditorDoc(selectedDuckData.script);
     }, [selectedDuckData]);
 
-    const onChange = useCallback((val: string) => {
-        setDoc(val, selectedDuckData);
-        setEditorDoc(val); // Update editorDoc with the new value
-    }, [setDoc, selectedDuckData]);
+    const onChange = useCallback(
+        (val: string) => {
+            setDoc(val, selectedDuckData);
+            setEditorDoc(val); // Update editorDoc with the new value
+        },
+        [setDoc, selectedDuckData],
+    );
 
     /** Format the script. */
     const formatScript = () => {
@@ -92,23 +107,32 @@ export default function Editor({
             const request: FormatRequest = {
                 order: "format",
                 doc: selectedDuckData.script,
-                tabWidth: settings.editor.tabWidth
+                tabWidth: settings.editor.tabWidth,
             };
             worker.current.postMessage(request);
         }
     };
 
     /** Called when the formatter WebWorker completes the formatting task. */
-    const handleWorkerMessage = useCallback((e: MessageEvent<FormatResponse>) => {
-        const { doc } = e.data;
-        setDoc(doc, selectedDuckData);
-        setEditorDoc(doc); // Update editorDoc with the formatted document
-    }, [setDoc, selectedDuckData]);
+    const handleWorkerMessage = useCallback(
+        (e: MessageEvent<FormatResponse>) => {
+            const { doc } = e.data;
+            setDoc(doc, selectedDuckData);
+            setEditorDoc(doc); // Update editorDoc with the formatted document
+        },
+        [setDoc, selectedDuckData],
+    );
 
     // Set up the WebWorker.
     useEffect(() => {
-        if (typeof window !== "undefined" && window.Worker && typeof worker.current === "undefined") {
-            worker.current = new Worker(new URL("@utils/editorDoWork", import.meta.url));
+        if (
+            typeof window !== "undefined" &&
+            window.Worker &&
+            typeof worker.current === "undefined"
+        ) {
+            worker.current = new Worker(
+                new URL("@utils/editorDoWork", import.meta.url),
+            );
             worker.current.onmessage = handleWorkerMessage;
         }
         return () => {
@@ -136,8 +160,16 @@ export default function Editor({
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <IconButton className="fa-solid fa-broom" tooltip="Format Script" onClick={formatScript} />
-                    <IconButton className="fa-solid fa-gear" tooltip="Open Settings" onClick={() => onToggleView("settings")} />
+                    <IconButton
+                        className="fa-solid fa-broom"
+                        tooltip="Format Script"
+                        onClick={formatScript}
+                    />
+                    <IconButton
+                        className="fa-solid fa-gear"
+                        tooltip="Open Settings"
+                        onClick={() => onToggleView("settings")}
+                    />
                 </div>
             </div>
             <div className="editor-parent">
@@ -163,57 +195,149 @@ export default function Editor({
 /** Define the pond API completions. */
 function initCompletions() {
     // log() function
-    addFunction('log', ['value'], "Prints the number", "Prints the specified number to your browser's console.");
+    addFunction(
+        "log",
+        ["value"],
+        "Prints the number",
+        "Prints the specified number to your browser's console.",
+    );
     // scan() functions
-    addFunction('scan', ['angle'], "Activates the duck's radar", "Activates the duck's radar. This function returns the range to the nearest opponent in the specified direction. If there's no opponent in that direction, then Infinity is returned.", 'scan(angle)');
-    addFunction('scan', ['angle', 'width'], "Activates the duck's radar with specified width", "Activates the duck's radar with specified width. This function returns the range to the nearest opponent in the specified direction. If there's no opponent in that direction, then Infinity is returned.", 'scan(angle, width)');
+    addFunction(
+        "scan",
+        ["angle"],
+        "Activates the duck's radar",
+        "Activates the duck's radar. This function returns the range to the nearest opponent in the specified direction. If there's no opponent in that direction, then Infinity is returned.",
+        "scan(angle)",
+    );
+    addFunction(
+        "scan",
+        ["angle", "width"],
+        "Activates the duck's radar with specified width",
+        "Activates the duck's radar with specified width. This function returns the range to the nearest opponent in the specified direction. If there's no opponent in that direction, then Infinity is returned.",
+        "scan(angle, width)",
+    );
     // cannon() function
-    addFunction('cannon', ['angle', 'range'], "Fires a cannnonball", "Fires a cannonball towards the specified angle and range. The cannon takes about one second to reload after firing.");
+    addFunction(
+        "cannon",
+        ["angle", "range"],
+        "Fires a cannnonball",
+        "Fires a cannonball towards the specified angle and range. The cannon takes about one second to reload after firing.",
+    );
     // Swimming functions
-    addFunction('drive', ['angle'], "Starts the duck moving", "Starts the duck moving. The duck will continue moving in the specified direction indefinitely.", 'drive(angle)');
-    addFunction('drive', ['angle', 'speed'], "Starts the duck moving", "Starts the duck moving. The duck will continue moving in the specified direction indefinitely. The second (optional) parameter of swim() specifies the speed (0 - 100).", 'drive(angle, speed)');
-    addFunction('swim', ['angle'], "Starts the duck moving", "Starts the duck moving. The duck will continue moving in the specified direction indefinitely.", 'swim(angle)');
-    addFunction('swim', ['angle', 'speed'], "Starts the duck moving", "Starts the duck moving. The duck will continue moving in the specified direction indefinitely. The second (optional) parameter of swim() specifies the speed (0 - 100).", 'swim(angle, speed)');
+    addFunction(
+        "drive",
+        ["angle"],
+        "Starts the duck moving",
+        "Starts the duck moving. The duck will continue moving in the specified direction indefinitely.",
+        "drive(angle)",
+    );
+    addFunction(
+        "drive",
+        ["angle", "speed"],
+        "Starts the duck moving",
+        "Starts the duck moving. The duck will continue moving in the specified direction indefinitely. The second (optional) parameter of swim() specifies the speed (0 - 100).",
+        "drive(angle, speed)",
+    );
+    addFunction(
+        "swim",
+        ["angle"],
+        "Starts the duck moving",
+        "Starts the duck moving. The duck will continue moving in the specified direction indefinitely.",
+        "swim(angle)",
+    );
+    addFunction(
+        "swim",
+        ["angle", "speed"],
+        "Starts the duck moving",
+        "Starts the duck moving. The duck will continue moving in the specified direction indefinitely. The second (optional) parameter of swim() specifies the speed (0 - 100).",
+        "swim(angle, speed)",
+    );
     // stop() function
-    addFunction('stop', [], "Stops the duck from moving", "stops the duck from moving. The duck will take a moment to slow down before stopping completely.");
+    addFunction(
+        "stop",
+        [],
+        "Stops the duck from moving",
+        "stops the duck from moving. The duck will take a moment to slow down before stopping completely.",
+    );
     // damage() functions
-    addFunction('damage', [], "Returns the duck's damage", "Retuns the duck's accumulative damage. Values are between 0 (perfect) and 100 (sunk). This is as same as calling 100 - health().");
-    addFunction('health', [], "Returns the duck's health", "Returns the duck's current health level. Values are between 100 (perfect) and 0 (sunk).");
+    addFunction(
+        "damage",
+        [],
+        "Returns the duck's damage",
+        "Retuns the duck's accumulative damage. Values are between 0 (perfect) and 100 (sunk). This is as same as calling 100 - health().",
+    );
+    addFunction(
+        "health",
+        [],
+        "Returns the duck's health",
+        "Returns the duck's current health level. Values are between 100 (perfect) and 0 (sunk).",
+    );
     // speed() function
-    addFunction('speed', [], "Returns the duck's speed", "Returns the duck's current speed. Values are between 0 (stopped) and 100 (fast).");
+    addFunction(
+        "speed",
+        [],
+        "Returns the duck's speed",
+        "Returns the duck's current speed. Values are between 0 (stopped) and 100 (fast).",
+    );
     // Position getter functions
-    addFunction('getX', [], "Returns the duck's x position", "Returns the duck's current horizontal position. Values are between 0 and 100, starting from the left edge.");
-    addFunction('loc_X', [], "Returns the duck's x position", "Returns the duck's current horizontal position. Values are between 0 and 100, starting from the left edge.");
-    addFunction('getY', [], "Returns the duck's y position", "Returns the duck's current vertical position. Values are between 0 and 100, starting from the bottom edge.");
-    addFunction('loc_Y', [], "Returns the duck's y position", "Returns the duck's current vertical position. Values are between 0 and 100, starting from the bottom edge.");
+    addFunction(
+        "getX",
+        [],
+        "Returns the duck's x position",
+        "Returns the duck's current horizontal position. Values are between 0 and 100, starting from the left edge.",
+    );
+    addFunction(
+        "loc_X",
+        [],
+        "Returns the duck's x position",
+        "Returns the duck's current horizontal position. Values are between 0 and 100, starting from the left edge.",
+    );
+    addFunction(
+        "getY",
+        [],
+        "Returns the duck's y position",
+        "Returns the duck's current vertical position. Values are between 0 and 100, starting from the bottom edge.",
+    );
+    addFunction(
+        "loc_Y",
+        [],
+        "Returns the duck's y position",
+        "Returns the duck's current vertical position. Values are between 0 and 100, starting from the bottom edge.",
+    );
     // Custom math functions
-    addFunction('sin_deg');
-    addFunction('cos_deg');
-    addFunction('tan_deg');
-    addFunction('asin_deg');
-    addFunction('acos_deg');
-    addFunction('atan_deg');
+    addFunction("sin_deg");
+    addFunction("cos_deg");
+    addFunction("tan_deg");
+    addFunction("asin_deg");
+    addFunction("acos_deg");
+    addFunction("atan_deg");
 }
 
 /** Add a function to the completion list. */
-function addFunction(name: string, args: string[] = [], detail: string = '', description: string = '', alterLabel: string | null = null) {
-    let argString: string = '';
+function addFunction(
+    name: string,
+    args: string[] = [],
+    detail: string = "",
+    description: string = "",
+    alterLabel: string | null = null,
+) {
+    let argString: string = "";
     for (const arg of args) {
-        if (argString != '') {
-            argString += ', '
+        if (argString != "") {
+            argString += ", ";
         }
-        argString += '$' + `{${arg}}`;
+        argString += "$" + `{${arg}}`;
     }
     if (!alterLabel) alterLabel = name;
     // Add a new completion.
     completions.push(
         snip(name + `(${argString})`, {
             label: alterLabel,
-            type: 'function',
+            type: "function",
             detail: detail,
-            info: description
-        })
-    )
+            info: description,
+        }),
+    );
 }
 
 function pondCompletion(context: CompletionContext) {
@@ -221,6 +345,6 @@ function pondCompletion(context: CompletionContext) {
     if (!word || (word.from === word.to && !context.explicit)) return null;
     return {
         from: word.from,
-        options: completions
+        options: completions,
     };
 }

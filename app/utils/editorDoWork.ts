@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,10 +38,10 @@ addEventListener("message", async (e: MessageEvent<FormatRequest>) => {
         parser: "meriyah",
         plugins: [meriyah, estree],
         tabWidth: request.tabWidth,
-        trailingComma: "es5"
+        trailingComma: "es5",
     });
     // Return the value via message.
     postMessage({
-        doc: formatted
+        doc: formatted,
     });
 });

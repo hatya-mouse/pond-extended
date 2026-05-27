@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-"use client"
+"use client";
 
-import * as Pond from '@pond-core/pond';
-import * as Utils from '@pond-game/utils/utils';
+import * as Pond from "@pond-core/pond";
+import * as Utils from "@pond-game/utils/utils";
 
 /** List of events to be visualized. */
 export var events = [];
@@ -82,7 +82,7 @@ export function start(doneCallback) {
         try {
             duck.initInterpreter();
         } catch (e) {
-            Utils.errorLog(duck, ' fails to load: ', e);
+            Utils.errorLog(duck, " fails to load: ", e);
             duck.die();
         }
     }
@@ -123,7 +123,9 @@ function stop() {
         }
     }
     const survivorCount = survivors.length;
-    survivors.sort((a, b) => { return a.damage - b.damage; });
+    survivors.sort((a, b) => {
+        return a.damage - b.damage;
+    });
     while (survivors.length) {
         rank.unshift(survivors.pop());
     }
@@ -145,7 +147,12 @@ function updateMissiles() {
                 if (duck.dead) {
                     continue;
                 }
-                const range = Utils.math.getDistance(duck.loc.x, duck.loc.y, missile.endLoc.x, missile.endLoc.y);
+                const range = Utils.math.getDistance(
+                    duck.loc.x,
+                    duck.loc.y,
+                    missile.endLoc.x,
+                    missile.endLoc.y,
+                );
                 const damage = (1 - range / 4) * 10;
                 if (damage > 0) {
                     duck.addDamage(damage);
@@ -153,11 +160,11 @@ function updateMissiles() {
                 }
             }
             events.push({
-                type: 'BOOM',
+                type: "BOOM",
                 damage: maxDamage,
                 x: missile.endLoc.x,
-                y: missile.endLoc.y
-            })
+                y: missile.endLoc.y,
+            });
         }
     }
 }
@@ -181,38 +188,55 @@ function updateDucks() {
             const [, closestBefore] = closestNeighbour(duck);
             // Get the movement from the angle and the speed.
             const angleRadians = Utils.math.degToRad(duck.degree);
-            const speed = duck.speed / 100 * duckSpeed;
+            const speed = (duck.speed / 100) * duckSpeed;
             const dx = Math.cos(angleRadians) * speed;
             const dy = Math.sin(angleRadians) * speed;
             // Move the duck.
             duck.loc.x += dx;
             duck.loc.y += dy;
             // Check if the duck hit the edge.
-            if (duck.loc.x < 0 || duck.loc.x > settings_.viewport.width ||
-                duck.loc.y < 0 || duck.loc.y > settings_.viewport.height) {
+            if (
+                duck.loc.x < 0 ||
+                duck.loc.x > settings_.viewport.width ||
+                duck.loc.y < 0 ||
+                duck.loc.y > settings_.viewport.height
+            ) {
                 // Clamp the location of the duck.
-                duck.loc.x = Utils.math.clamp(duck.loc.x, 0, settings_.viewport.width);
-                duck.loc.y = Utils.math.clamp(duck.loc.y, 0, settings_.viewport.height);
+                duck.loc.x = Utils.math.clamp(
+                    duck.loc.x,
+                    0,
+                    settings_.viewport.width,
+                );
+                duck.loc.y = Utils.math.clamp(
+                    duck.loc.y,
+                    0,
+                    settings_.viewport.height,
+                );
                 // Calculate and give damage to the duck.
-                const damage = duck.speed / 100 * collisionDamage;
+                const damage = (duck.speed / 100) * collisionDamage;
                 duck.addDamage(damage);
                 // Set the speed to zero.
                 duck.speed = 0;
                 duck.desiredSpeed = 0;
                 events.push({
-                    type: 'CRASH',
+                    type: "CRASH",
                     duck: duck,
-                    damage: damage
+                    damage: damage,
                 });
             } else {
                 const [neighbour, closestAfter] = closestNeighbour(duck);
-                if (closestAfter < collisionRadius && closestBefore > closestAfter) {
+                if (
+                    closestAfter < collisionRadius &&
+                    closestBefore > closestAfter
+                ) {
                     // Collision with another duck.
                     // Move to the position before.
                     duck.loc.x -= dx;
                     duck.loc.y -= dy;
                     // Calculate and give damage to the duck.
-                    const damage = Math.max(duck.speed, neighbour.speed) / 100 * collisionDamage;
+                    const damage =
+                        (Math.max(duck.speed, neighbour.speed) / 100) *
+                        collisionDamage;
                     duck.addDamage(damage);
                     // Stop the duck.
                     duck.speed = 0;
@@ -223,15 +247,18 @@ function updateDucks() {
                     neighbour.speed = 0;
                     neighbour.desiredSpeed = 0;
                     // Push the collision event.
-                    events.push({
-                        type: 'CRASH',
-                        duck: duck,
-                        damage: damage
-                    }, {
-                        type: 'CRASH',
-                        duck: neighbour,
-                        damage: damage
-                    });
+                    events.push(
+                        {
+                            type: "CRASH",
+                            duck: duck,
+                            damage: damage,
+                        },
+                        {
+                            type: "CRASH",
+                            duck: neighbour,
+                            damage: damage,
+                        },
+                    );
                 }
             }
         }
@@ -249,7 +276,7 @@ function updateInterpreters() {
             try {
                 duck.interpreter.step();
             } catch (e) {
-                Utils.errorLog(duck + ' throws an error: ' + e);
+                Utils.errorLog(duck + " throws an error: " + e);
                 duck.die();
             }
             currentDuck = null;
@@ -266,7 +293,15 @@ function closestNeighbour(duck) {
     let distance = Infinity;
     for (const neighbour of Pond.ducks) {
         if (!neighbour.dead && duck !== neighbour) {
-            const thisDistance = Math.min(distance, Utils.math.getDistance(duck.loc.x, duck.loc.y, neighbour.loc.x, neighbour.loc.y));
+            const thisDistance = Math.min(
+                distance,
+                Utils.math.getDistance(
+                    duck.loc.x,
+                    duck.loc.y,
+                    neighbour.loc.x,
+                    neighbour.loc.y,
+                ),
+            );
             if (thisDistance < distance) {
                 distance = thisDistance;
                 closest = neighbour;
@@ -280,97 +315,103 @@ export var initInterpreter = (interpreter, globalObject) => {
     let log = (value) => {
         Utils.log(`${currentDuck.name} logs: ${Number(value)}`);
     };
-    wrap('log', log);
+    wrap("log", log);
 
     let scan = (degree, resolution) => {
         return currentDuck.scan(degree, resolution);
     };
-    wrap('scan', scan);
+    wrap("scan", scan);
 
     let cannon = (degree, range) => {
         return currentDuck.cannon(degree, range);
     };
-    wrap('cannon', cannon);
+    wrap("cannon", cannon);
 
     let drive = (degree, speed) => {
         currentDuck.drive(degree, speed);
     };
-    wrap('drive', drive);
-    wrap('swim', drive);
+    wrap("drive", drive);
+    wrap("swim", drive);
 
     let stop = () => {
         currentDuck.speed = 0;
         currentDuck.disiredSpeed = 0;
     };
-    wrap('stop', stop);
+    wrap("stop", stop);
 
     var damage = () => {
         return currentDuck.damage;
     };
-    wrap('damage', damage);
+    wrap("damage", damage);
 
     var health = () => {
         return 100 - currentDuck.damage;
     };
-    wrap('health', health);
+    wrap("health", health);
 
     var speed = () => {
         return currentDuck.speed;
     };
-    wrap('speed', speed);
+    wrap("speed", speed);
 
     var getX = () => {
         return currentDuck.loc.x;
     };
-    wrap('loc_x', getX);
-    wrap('getX', getX);
+    wrap("loc_x", getX);
+    wrap("getX", getX);
 
     var getY = () => {
         return currentDuck.loc.y;
     };
-    wrap('loc_y', getY);
-    wrap('getY', getY);
+    wrap("loc_y", getY);
+    wrap("getY", getY);
 
     function wrap(name, func) {
-        interpreter.setProperty(globalObject, name,
-            interpreter.createNativeFunction(func, false));
+        interpreter.setProperty(
+            globalObject,
+            name,
+            interpreter.createNativeFunction(func, false),
+        );
     }
 
-    var myMath = interpreter.getProperty(globalObject, 'Math');
+    var myMath = interpreter.getProperty(globalObject, "Math");
     if (myMath) {
         let sin_deg = (v) => {
             return Math.sin(Utils.math.degToRad(v));
         };
-        wrapMath('sin_deg', sin_deg);
+        wrapMath("sin_deg", sin_deg);
 
         let cos_deg = (v) => {
             return Math.cos(Utils.math.degToRad(v));
         };
-        wrapMath('cos_deg', cos_deg);
+        wrapMath("cos_deg", cos_deg);
 
         let tan_deg = (v) => {
             return Math.tan(Utils.math.degToRad(v));
         };
-        wrapMath('tan_deg', tan_deg);
+        wrapMath("tan_deg", tan_deg);
 
         let asin_deg = (v) => {
             return Utils.math.radToDeg(Math.asin(v));
         };
-        wrapMath('asin_deg', asin_deg);
+        wrapMath("asin_deg", asin_deg);
 
         let acos_deg = (v) => {
             return Utils.math.radToDeg(Math.acos(v));
         };
-        wrapMath('acos_deg', acos_deg);
+        wrapMath("acos_deg", acos_deg);
 
         let atan_deg = (v) => {
             return Utils.math.radToDeg(Math.atan(v));
         };
-        wrapMath('atan_deg', atan_deg);
+        wrapMath("atan_deg", atan_deg);
     }
 
     function wrapMath(name, func) {
-        interpreter.setProperty(myMath, name,
-            interpreter.createNativeFunction(func, false));
+        interpreter.setProperty(
+            myMath,
+            name,
+            interpreter.createNativeFunction(func, false),
+        );
     }
 };

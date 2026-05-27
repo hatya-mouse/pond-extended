@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 // limitations under the License.
 //
 
-import * as Battle from '@pond-core/battle.js';
-import * as Visualization from '@pond-core/visualization.js';
-import * as Transpile from '@pond-game/utils/transpile.js';
+import * as Battle from "@pond-core/battle.js";
+import * as Visualization from "@pond-core/visualization.js";
+import * as Transpile from "@pond-game/utils/transpile.js";
 import Duck from "@app/types/duck";
 import { PondSettings } from "@app/types/pond.types";
 
@@ -34,7 +34,7 @@ export function init(
     scratch: HTMLCanvasElement,
     settings: PondSettings,
     gameEndCallback: () => void,
-    damageCallback?: (_: Duck[]) => void
+    damageCallback?: (_: Duck[]) => void,
 ) {
     settings_ = settings;
     // Initialize the game.
@@ -58,7 +58,9 @@ export function reset(settings: PondSettings) {
     // Deep clone the duck data to avoid overwriting the settings by changing its property.
     for (let duck of settings.ducks) {
         duck = structuredClone(duck);
-        ducks.push(new Duck(duck.id, duck.name, duck.loc, duck.color, updateDuckInfo));
+        ducks.push(
+            new Duck(duck.id, duck.name, duck.loc, duck.color, updateDuckInfo),
+        );
     }
     // Save all the scripts.
     saveDuckScripts();

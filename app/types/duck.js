@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 // limitations under the License.
 //
 
-import * as Utils from '@pond-game/utils/utils';
-import * as Battle from '@pond-core/battle';
-import * as Pond from '@pond-core/pond';
-import Interpreter from 'js-interpreter';
+import * as Utils from "@pond-game/utils/utils";
+import * as Battle from "@pond-core/battle";
+import * as Pond from "@pond-core/pond";
+import Interpreter from "js-interpreter";
 
 export default class Duck {
     /** Class for a duck (duck).
@@ -60,7 +60,7 @@ export default class Duck {
     }
 
     toString() {
-        return `[${this.name}]`
+        return `[${this.name}]`;
     }
 
     /**
@@ -91,7 +91,10 @@ export default class Duck {
      * Initialize the interpreter.
      */
     initInterpreter() {
-        this.interpreter = new Interpreter(this.compiled, Battle.initInterpreter);
+        this.interpreter = new Interpreter(
+            this.compiled,
+            Battle.initInterpreter,
+        );
     }
 
     /**
@@ -125,8 +128,12 @@ export default class Duck {
      * @returns {number} Distance (0 - ~141), or Infinity if no duck detected.
      */
     scan(degree, opt_resolution = 5) {
-        if ((typeof degree !== 'number') || isNaN(degree) ||
-            (typeof opt_resolution !== 'number') || isNaN(opt_resolution)) {
+        if (
+            typeof degree !== "number" ||
+            isNaN(degree) ||
+            typeof opt_resolution !== "number" ||
+            isNaN(opt_resolution)
+        ) {
             throw TypeError();
         }
         let resolution;
@@ -136,10 +143,10 @@ export default class Duck {
         resolution = Utils.math.clamp(opt_resolution, 0, 20);
         // Visualize the scan ray.
         Battle.events.push({
-            'type': 'SCAN',
-            'duck': this,
-            'degree': degree,
-            'resolution': resolution
+            type: "SCAN",
+            duck: this,
+            degree: degree,
+            resolution: resolution,
         });
         // Compute both edges of the scan.
         const scan1 = Utils.math.normalizeAngle(degree - resolution / 2);
@@ -184,8 +191,12 @@ export default class Duck {
      */
     drive(degree, opt_speed = 50) {
         // Throw an TypeError if degree or opt_speed isn't number
-        if ((typeof degree !== 'number') || isNaN(degree) ||
-            (typeof opt_speed !== 'number') || isNaN(opt_speed)) {
+        if (
+            typeof degree !== "number" ||
+            isNaN(degree) ||
+            typeof opt_speed !== "number" ||
+            isNaN(opt_speed)
+        ) {
             throw TypeError();
         }
         // Normalize the angle.
@@ -216,8 +227,12 @@ export default class Duck {
      * @returns {boolean} True if cannon fired, false if still reloading cannon.
      */
     cannon(degree, range) {
-        if ((typeof degree !== 'number') || isNaN(degree) ||
-            (typeof range !== 'number') || isNaN(range)) {
+        if (
+            typeof degree !== "number" ||
+            isNaN(degree) ||
+            typeof range !== "number" ||
+            isNaN(range)
+        ) {
             throw TypeError;
         }
         // Get the now date.
@@ -247,13 +262,13 @@ export default class Duck {
             degree: degree,
             range: range,
             endLoc: endLoc,
-            progress: 0
+            progress: 0,
         });
         // Visuaize the bang effect.
         Battle.events.push({
-            type: 'BANG',
+            type: "BANG",
             duck: this,
-            degree: degree
+            degree: degree,
         });
         return true;
     }

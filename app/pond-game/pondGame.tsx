@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,23 +32,30 @@ export default function PondGame({
     onDuckSelect,
     onUpdateInGameSettings,
 }: {
-    settings: PondSettings,
-    inGameSettings: PondSettings,
-    selectedDuck: DuckData,
+    settings: PondSettings;
+    inGameSettings: PondSettings;
+    selectedDuck: DuckData;
     /**
      * Called when the duck is selected.
      * @param {number} _ ID of the selected duck, not index.
      */
-    onDuckSelect: (_: number) => void,
-    onUpdateInGameSettings: () => void,
+    onDuckSelect: (_: number) => void;
+    onUpdateInGameSettings: () => void;
 }) {
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null);
-    const [scratchCanvas, setScratchCanvas] = useState<HTMLCanvasElement | null>(null);
+    const [scratchCanvas, setScratchCanvas] =
+        useState<HTMLCanvasElement | null>(null);
     // Canvas context.
-    const [canvasCtx, setCanvasCtx] = useState<CanvasRenderingContext2D | null>(null);
-    const [scratchCanvasCtx, setScratchCanvasCtx] = useState<CanvasRenderingContext2D | null>(null);
+    const [canvasCtx, setCanvasCtx] = useState<CanvasRenderingContext2D | null>(
+        null,
+    );
+    const [scratchCanvasCtx, setScratchCanvasCtx] =
+        useState<CanvasRenderingContext2D | null>(null);
     // Canvas actual width and height.
-    const [viewportSize, setViewportSize] = useState({ width: 100, height: 100 });
+    const [viewportSize, setViewportSize] = useState({
+        width: 100,
+        height: 100,
+    });
     // Whether the game is started. (true even if the game is paused.
     const [started, setStarted] = useState(false);
     // Whether the game is paused.
@@ -100,11 +107,14 @@ export default function PondGame({
         Pond.highlightDuck(selectedDuck.id);
     }, [selectedDuck]);
 
-    const handleDuckSelection = useCallback((id: number) => {
-        onDuckSelect(id);
-        // Don't highlight the duck during the game.
-        Pond.highlightDuck(paused ? id : NaN);
-    }, [paused, onDuckSelect]);
+    const handleDuckSelection = useCallback(
+        (id: number) => {
+            onDuckSelect(id);
+            // Don't highlight the duck during the game.
+            Pond.highlightDuck(paused ? id : NaN);
+        },
+        [paused, onDuckSelect],
+    );
 
     const resizeCanvas = useCallback(() => {
         if (!canvas) return;
@@ -127,7 +137,9 @@ export default function PondGame({
     }, [canvas, resizeCanvas]);
 
     useEffect(() => {
-        const viewport = document.getElementById("viewport") as HTMLCanvasElement;
+        const viewport = document.getElementById(
+            "viewport",
+        ) as HTMLCanvasElement;
         setCanvasCtx(viewport.getContext("2d"));
         setCanvas(viewport);
 
@@ -138,9 +150,22 @@ export default function PondGame({
 
     useEffect(() => {
         if (canvas && scratchCanvas && canvasCtx && scratchCanvasCtx) {
-            Pond.init(canvas, scratchCanvas, inGameSettings, onGameEnd, updateDuckInfo);
+            Pond.init(
+                canvas,
+                scratchCanvas,
+                inGameSettings,
+                onGameEnd,
+                updateDuckInfo,
+            );
         }
-    }, [canvasCtx, scratchCanvasCtx, canvas, scratchCanvas, inGameSettings, onGameEnd]);
+    }, [
+        canvasCtx,
+        scratchCanvasCtx,
+        canvas,
+        scratchCanvas,
+        inGameSettings,
+        onGameEnd,
+    ]);
 
     useEffect(() => {
         if (!started && settings !== inGameSettings) {
@@ -181,7 +206,11 @@ export default function PondGame({
                     onReset={reset}
                     isPaused={paused}
                 />
-                <PlayerList ducks={duckInfo} latestSettings={settings} onSelectDuck={handleDuckSelection} />
+                <PlayerList
+                    ducks={duckInfo}
+                    latestSettings={settings}
+                    onSelectDuck={handleDuckSelection}
+                />
             </div>
         </div>
     );

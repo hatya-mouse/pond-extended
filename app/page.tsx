@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-"use client"
+"use client";
 
 // React imports
 import { useCallback, useEffect, useState, useMemo } from "react";
@@ -37,16 +37,22 @@ export default function Home() {
     // The latest settings.
     const [settings, setSettings] = useState<PondSettings>(initialSettings);
     // The settings which is currently used in the game.
-    const [inGameSettings, setInGameSettings] = useState<PondSettings>(initialSettings);
+    const [inGameSettings, setInGameSettings] =
+        useState<PondSettings>(initialSettings);
     // Scripts
-    const [selectedDuckData, setSelectedDuckData] = useState<DuckData>(settings.ducks[0]);
+    const [selectedDuckData, setSelectedDuckData] = useState<DuckData>(
+        settings.ducks[0],
+    );
     // Credit visible
     const [isCreditVisible, setCreditVisible] = useState(false);
 
     // Memoize the dark mode media query
     const darkModeQuery = useMemo(
-        () => typeof window !== 'undefined' ? window.matchMedia("(prefers-color-scheme: dark)") : null,
-        []
+        () =>
+            typeof window !== "undefined"
+                ? window.matchMedia("(prefers-color-scheme: dark)")
+                : null,
+        [],
     );
 
     // Dark mode effect
@@ -75,36 +81,47 @@ export default function Home() {
         };
     }, []);
 
-    const getDuckDataFromId = useCallback((id: number): DuckData | undefined => {
-        return settings.ducks.filter((duck) => duck.id === id)[0];
-    }, [settings.ducks]);
+    const getDuckDataFromId = useCallback(
+        (id: number): DuckData | undefined => {
+            return settings.ducks.filter((duck) => duck.id === id)[0];
+        },
+        [settings.ducks],
+    );
 
-    const selectDuck = useCallback((id: number) => {
-        const duck = getDuckDataFromId(id);
-        if (duck) setSelectedDuckData(duck);
-        else console.error(`Duck selection failed. Duck id: ${id}`);
-    }, [getDuckDataFromId]);
+    const selectDuck = useCallback(
+        (id: number) => {
+            const duck = getDuckDataFromId(id);
+            if (duck) setSelectedDuckData(duck);
+            else console.error(`Duck selection failed. Duck id: ${id}`);
+        },
+        [getDuckDataFromId],
+    );
 
-    const updateSettings = useCallback((newSettings: PondSettings) => {
-        // Clone the settings.
-        newSettings = structuredClone(newSettings);
-        // Set the settings.
-        setSettings(newSettings);
+    const updateSettings = useCallback(
+        (newSettings: PondSettings) => {
+            // Clone the settings.
+            newSettings = structuredClone(newSettings);
+            // Set the settings.
+            setSettings(newSettings);
 
-        setTimeout(() => {
-            // Set the selected duck.
-            let duckId = selectedDuckData.id;
-            // If old selected duck doesn't exist, select the first one.
-            const isIdExist = newSettings.ducks.filter((duck) => duck.id === duckId).length > 0;
-            if (!isIdExist) {
-                // Get the first item from ducks array.
-                const firstKey = newSettings.ducks[0].id;
-                duckId = firstKey;
-            }
-            // Select the duck.
-            selectDuck(duckId);
-        }, 0);
-    }, [selectedDuckData.id, selectDuck]);
+            setTimeout(() => {
+                // Set the selected duck.
+                let duckId = selectedDuckData.id;
+                // If old selected duck doesn't exist, select the first one.
+                const isIdExist =
+                    newSettings.ducks.filter((duck) => duck.id === duckId)
+                        .length > 0;
+                if (!isIdExist) {
+                    // Get the first item from ducks array.
+                    const firstKey = newSettings.ducks[0].id;
+                    duckId = firstKey;
+                }
+                // Select the duck.
+                selectDuck(duckId);
+            }, 0);
+        },
+        [selectedDuckData.id, selectDuck],
+    );
 
     const onDocChange = useCallback((newDocument: string, duck: DuckData) => {
         duck.script = newDocument;
@@ -159,7 +176,12 @@ export default function Home() {
 
     return (
         <div className={isDarkmode ? "dark" : ""}>
-            <PageHeader darkMode={isDarkmode} onSave={handleSaveBattle} onLoad={handleLoadBattle} onInfo={handleShowCredits} />
+            <PageHeader
+                darkMode={isDarkmode}
+                onSave={handleSaveBattle}
+                onLoad={handleLoadBattle}
+                onInfo={handleShowCredits}
+            />
             <div className={`flex gap-2 p-2`}>
                 <PondGame
                     settings={settings}
@@ -186,7 +208,12 @@ export default function Home() {
                 />
             </div>
             <div id="overlays"></div>
-            {isCreditVisible && <CreditView onHide={() => setCreditVisible(false)} darkMode={isDarkmode} />}
-        </div >
+            {isCreditVisible && (
+                <CreditView
+                    onHide={() => setCreditVisible(false)}
+                    darkMode={isDarkmode}
+                />
+            )}
+        </div>
     );
 }

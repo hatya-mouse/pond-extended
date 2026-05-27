@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ export default function ControlBar({
     onStart,
     onPause,
     onReset,
-    isPaused = false
+    isPaused = false,
 }: {
-    onStart: () => void,
-    onPause: () => void,
-    onReset: () => void,
-    isPaused?: boolean
+    onStart: () => void;
+    onPause: () => void;
+    onReset: () => void;
+    isPaused?: boolean;
 }) {
     return (
         <div className="float-container control-bar">
@@ -38,9 +38,13 @@ export default function ControlBar({
                     else onPause();
                 }}
             />
-            <IconButton className="fa-solid fa-rotate-left" tooltip="Reset" onClick={() => {
-                onReset();
-            }} />
+            <IconButton
+                className="fa-solid fa-rotate-left"
+                tooltip="Reset"
+                onClick={() => {
+                    onReset();
+                }}
+            />
         </div>
     );
 }

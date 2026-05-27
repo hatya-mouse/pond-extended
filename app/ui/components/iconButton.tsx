@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-"use client"
+"use client";
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -24,15 +24,18 @@ export default function IconButton({
     className = "",
     tooltip = "",
     disabled = false,
-    onClick = () => { }
+    onClick = () => {},
 }: {
-    className?: string,
-    tooltip?: string,
-    disabled?: boolean,
-    onClick?: () => void
+    className?: string;
+    tooltip?: string;
+    disabled?: boolean;
+    onClick?: () => void;
 }) {
     const [hover, setHover] = useState(false);
-    const [tooltipPosition, setTooltipPosition] = useState<{ top: number; left: number } | null>(null);
+    const [tooltipPosition, setTooltipPosition] = useState<{
+        top: number;
+        left: number;
+    } | null>(null);
 
     const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -53,26 +56,31 @@ export default function IconButton({
     };
 
     // Show tooltip when mouse hovered.
-    const tooltipElement = hover && tooltipPosition && tooltip
-        ? createPortal(
-            <div
-                className="icon-button-tooltip tooltip-hover"
-                style={{
-                    position: 'absolute',
-                    top: `${tooltipPosition.top + 3}px`,
-                    left: `${tooltipPosition.left}px`,
-                }}
-            >
-                {tooltip}
-            </div>,
-            document.getElementById('overlays') as HTMLElement
-        )
-        : null;
+    const tooltipElement =
+        hover && tooltipPosition && tooltip
+            ? createPortal(
+                  <div
+                      className="icon-button-tooltip tooltip-hover"
+                      style={{
+                          position: "absolute",
+                          top: `${tooltipPosition.top + 3}px`,
+                          left: `${tooltipPosition.left}px`,
+                      }}
+                  >
+                      {tooltip}
+                  </div>,
+                  document.getElementById("overlays") as HTMLElement,
+              )
+            : null;
 
     return (
         <div className="relative cursor-pointer">
             <button
-                className={clsx(className, "icon-button", disabled && "disabled")}
+                className={clsx(
+                    className,
+                    "icon-button",
+                    disabled && "disabled",
+                )}
                 onClick={() => {
                     if (!disabled) onClick();
                 }}

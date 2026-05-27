@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,25 +15,27 @@
 //
 
 import { useState, useRef, useEffect } from "react";
-import { createPortal } from "react-dom"
-import { SketchPicker, ColorResult } from "react-color"
+import { createPortal } from "react-dom";
+import { SketchPicker, ColorResult } from "react-color";
 
 export default function ColorPickerButton({
     className = "",
     width = "28px",
     color = "#000000",
-    onChange = () => { },
+    onChange = () => {},
     darkMode = false,
 }: {
-    className?: string,
-    width?: string,
-    color?: string,
-    onChange?: (_: ColorResult) => void,
-    darkMode?: boolean
+    className?: string;
+    width?: string;
+    color?: string;
+    onChange?: (_: ColorResult) => void;
+    darkMode?: boolean;
 }) {
     const [isHidden, setHidden] = useState(true);
     const [pickerPosition, setPickerPosition] = useState({ top: 0, left: 0 });
-    const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null);
+    const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(
+        null,
+    );
     const pickerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -42,12 +44,16 @@ export default function ColorPickerButton({
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (pickerRef.current && !pickerRef.current.contains(event.target as Node)) {
+            if (
+                pickerRef.current &&
+                !pickerRef.current.contains(event.target as Node)
+            ) {
                 setHidden(true);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     const handleColorPickerClick = (event: React.MouseEvent) => {
@@ -56,7 +62,7 @@ export default function ColorPickerButton({
 
         setPickerPosition({
             top: rect.bottom + window.scrollY + 5,
-            left: rect.left + window.scrollX
+            left: rect.left + window.scrollX,
         });
         setHidden(false);
     };
@@ -71,8 +77,9 @@ export default function ColorPickerButton({
                     width: width,
                 }}
             ></button>
-            {
-                !isHidden && portalContainer && createPortal(
+            {!isHidden &&
+                portalContainer &&
+                createPortal(
                     <div
                         ref={pickerRef}
                         className="colorpicker-container"
@@ -89,9 +96,8 @@ export default function ColorPickerButton({
                             className={darkMode ? "dark" : ""}
                         />
                     </div>,
-                    portalContainer
-                )
-            }
+                    portalContainer,
+                )}
         </>
-    )
+    );
 }

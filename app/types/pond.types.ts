@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,16 +47,16 @@ export class PondSettings {
 export class DuckData {
     id: number;
     name: string;
-    loc: { x: number, y: number };
+    loc: { x: number; y: number };
     color: string;
     script: string;
 
     constructor(
         id: number = Date.now(),
         name: string = "",
-        loc: { x: number, y: number } = { x: 0, y: 0 },
+        loc: { x: number; y: number } = { x: 0, y: 0 },
         color: string = "#ffffff",
-        script: string = ""
+        script: string = "",
     ) {
         this.id = id;
         this.name = name;
@@ -80,7 +80,7 @@ export interface Missile {
 }
 
 export interface Event {
-    type: 'CRASH' | 'SCAN' | 'BANG' | 'BOOM' | 'DIE';
+    type: "CRASH" | "SCAN" | "BANG" | "BOOM" | "DIE";
     duck?: Duck;
     damage?: number;
     x?: number;

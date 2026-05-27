@@ -1,5 +1,5 @@
 //
-// Copyright 2025 Shuntaro Kasatani
+// Copyright 2025-2026 Shuntaro Kasatani
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import { PondSettings } from "@app/types/pond.types";
  * Contains settings and scripts for the game.
  */
 type PondData = {
-    settings: PondSettings,
+    settings: PondSettings;
 };
 
 /**
@@ -30,51 +30,59 @@ type PondData = {
  * @returns True if the settings object is valid, false otherwise
  */
 function validateSettings(settings: unknown): settings is PondSettings {
-    if (!settings || typeof settings !== 'object') return false;
+    if (!settings || typeof settings !== "object") return false;
 
     // Type assertion with type predicate for type-safe property access
     const s = settings as Partial<PondSettings>;
 
     // Validate game settings
-    if (!s.game || typeof s.game !== 'object') return false;
-    if (typeof s.game.fps !== 'number' || s.game.fps <= 0) return false;
-    if (typeof s.game.tps !== 'number' || s.game.tps <= 0) return false;
-    if (typeof s.game.volume !== 'number' || s.game.volume < 0 || s.game.volume > 1) return false;
+    if (!s.game || typeof s.game !== "object") return false;
+    if (typeof s.game.fps !== "number" || s.game.fps <= 0) return false;
+    if (typeof s.game.tps !== "number" || s.game.tps <= 0) return false;
+    if (
+        typeof s.game.volume !== "number" ||
+        s.game.volume < 0 ||
+        s.game.volume > 1
+    )
+        return false;
 
     // Validate viewport settings
-    if (!s.viewport || typeof s.viewport !== 'object') return false;
-    if (typeof s.viewport.width !== 'number' || s.viewport.width <= 0) return false;
-    if (typeof s.viewport.height !== 'number' || s.viewport.height <= 0) return false;
-    if (typeof s.viewport.backgroundColor !== 'string') return false;
+    if (!s.viewport || typeof s.viewport !== "object") return false;
+    if (typeof s.viewport.width !== "number" || s.viewport.width <= 0)
+        return false;
+    if (typeof s.viewport.height !== "number" || s.viewport.height <= 0)
+        return false;
+    if (typeof s.viewport.backgroundColor !== "string") return false;
 
     // Validate duck settings
-    if (!s.duck || typeof s.duck !== 'object') return false;
-    if (typeof s.duck.billColor1 !== 'string') return false;
-    if (typeof s.duck.billColor2 !== 'string') return false;
-    if (typeof s.duck.circleColor !== 'string') return false;
-    if (typeof s.duck.outerEyeColor !== 'string') return false;
-    if (typeof s.duck.innerEyeColor !== 'string') return false;
+    if (!s.duck || typeof s.duck !== "object") return false;
+    if (typeof s.duck.billColor1 !== "string") return false;
+    if (typeof s.duck.billColor2 !== "string") return false;
+    if (typeof s.duck.circleColor !== "string") return false;
+    if (typeof s.duck.outerEyeColor !== "string") return false;
+    if (typeof s.duck.innerEyeColor !== "string") return false;
 
     // Validate editor settings
-    if (!s.editor || typeof s.editor !== 'object') return false;
-    if (typeof s.editor.tabWidth !== 'number' || s.editor.tabWidth <= 0) return false;
+    if (!s.editor || typeof s.editor !== "object") return false;
+    if (typeof s.editor.tabWidth !== "number" || s.editor.tabWidth <= 0)
+        return false;
 
     // Validate ducks array
     if (!Array.isArray(s.ducks)) return false;
 
     // Validate each duck in the array
-    return s.ducks.every(duck => {
-        if (!duck || typeof duck !== 'object') return false;
+    return s.ducks.every((duck) => {
+        if (!duck || typeof duck !== "object") return false;
 
         return (
-            typeof duck.id === 'number' &&
-            typeof duck.name === 'string' &&
-            typeof duck.color === 'string' &&
-            typeof duck.script === 'string' &&
+            typeof duck.id === "number" &&
+            typeof duck.name === "string" &&
+            typeof duck.color === "string" &&
+            typeof duck.script === "string" &&
             duck.loc &&
-            typeof duck.loc === 'object' &&
-            typeof duck.loc.x === 'number' &&
-            typeof duck.loc.y === 'number'
+            typeof duck.loc === "object" &&
+            typeof duck.loc.x === "number" &&
+            typeof duck.loc.y === "number"
         );
     });
 }
@@ -86,7 +94,7 @@ function validateSettings(settings: unknown): settings is PondSettings {
  * @returns True if the data structure is valid, false otherwise
  */
 function validatePondData(data: unknown): data is PondData {
-    if (!data || typeof data !== 'object') {
+    if (!data || typeof data !== "object") {
         throw new Error("Data must be an object");
         return false;
     }
