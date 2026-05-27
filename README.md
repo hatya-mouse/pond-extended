@@ -57,6 +57,7 @@ This project utilizes the following third-party libraries:
 | [js-interpreter](https://github.com/NeilFraser/JS-Interpreter) | JavaScript interpreter written in JavaScript |
 | [@babel/standalone](https://babeljs.io/) | Standalone build of Babel for browser usage |
 | [react-color](https://casesandberg.github.io/react-color/) | Color picker component for React |
+| [react-resizable-panels](https://github.com/bvaughn/react-resizable-panels) | Risazable split panel for React |
 | [TypeScript](https://www.typescriptlang.org/) | JavaScript with syntax for types |
 | [Tailwind CSS](https://tailwindcss.com/) | Easy-to-use CSS framework |
 
