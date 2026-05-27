@@ -59,7 +59,7 @@ export default function PlayerList({
                     >
                         <div
                             className={clsx(
-                                "p-1 px-2 whitespce-nowrap",
+                                "p-1 px-2 whitespace-nowrap",
                                 "player-list-item-text",
                                 duck.dead ? "text-red-400" : "text-white",
                             )}
