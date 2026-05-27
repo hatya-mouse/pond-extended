@@ -193,7 +193,7 @@ export default function PondGame({
                         id="viewport"
                         style={{
                             aspectRatio: `${inGameSettings.viewport.width} / ${inGameSettings.viewport.height}`,
-                            width: "400px",
+                            width: "100%",
                             height: "auto",
                         }}
                         width={viewportSize.width}

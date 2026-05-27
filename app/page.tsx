@@ -18,6 +18,8 @@
 
 // React imports
 import { useCallback, useEffect, useState, useMemo } from "react";
+// Resizable panels
+import { Panel, Group, Separator } from "react-resizable-panels";
 // Utils
 import * as PondDataLoader from "@utils/pondDataLoader";
 import { PondSettings, DuckData } from "@app/types/pond.types";
@@ -195,29 +197,37 @@ export default function Home() {
                 onInfo={handleShowCredits}
             />
             <div className={`flex gap-2 p-2`}>
-                <PondGame
-                    settings={settings}
-                    inGameSettings={inGameSettings}
-                    selectedDuck={selectedDuckData}
-                    onDuckSelect={selectDuck}
-                    onUpdateInGameSettings={handleUpdateInGameSettings}
-                />
-                {/* Pass the setter function of "doc" to the Editor element. */}
-                <Editor
-                    className={`grow ${activeView === "settings" && "hidden"}`}
-                    settings={settings}
-                    setDoc={onDocChange}
-                    onToggleView={setActiveView}
-                    darkMode={isDarkmode}
-                    selectedDuckData={selectedDuckData}
-                />
-                <SettingsView
-                    className={`grow ${activeView === "editor" && "hidden"}`}
-                    onToggleView={setActiveView}
-                    darkMode={isDarkmode}
-                    settings={settings}
-                    onChangeSettings={updateSettings}
-                />
+                <Group>
+                    <Panel minSize={100} defaultSize={400}>
+                        <PondGame
+                            settings={settings}
+                            inGameSettings={inGameSettings}
+                            selectedDuck={selectedDuckData}
+                            onDuckSelect={selectDuck}
+                            onUpdateInGameSettings={handleUpdateInGameSettings}
+                        />
+                    </Panel>
+                    <Separator className="w-3 flex items-center justify-center opacity-0 hover:opacity-70 transition-opacity duration-200">
+                        <div className="w-1 h-32 max-h-full bg-neutral-500 rounded" />
+                    </Separator>
+                    <Panel minSize={200}>
+                        <Editor
+                            className={`grow ${activeView === "settings" && "hidden"}`}
+                            settings={settings}
+                            setDoc={onDocChange}
+                            onToggleView={setActiveView}
+                            darkMode={isDarkmode}
+                            selectedDuckData={selectedDuckData}
+                        />
+                        <SettingsView
+                            className={`grow ${activeView === "editor" && "hidden"}`}
+                            onToggleView={setActiveView}
+                            darkMode={isDarkmode}
+                            settings={settings}
+                            onChangeSettings={updateSettings}
+                        />
+                    </Panel>
+                </Group>
             </div>
             <div id="overlays"></div>
             {isCreditVisible && (
