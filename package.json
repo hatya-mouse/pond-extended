@@ -4,6 +4,7 @@
   "private": true,
   "author": "Hatya Mouse",
   "license": "Apache-2.0",
+  "packageManager": "pnpm@11.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/hatya-mouse/pond-extended"
