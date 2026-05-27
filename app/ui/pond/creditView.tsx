@@ -159,7 +159,7 @@ export default function CreditView({
                         .
                     </p>
                     <a
-                        className="mt-1"
+                        className="mt-2"
                         href="https://www.producthunt.com/products/pond-extended?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-pond-extended"
                         target="_blank"
                         rel="noopener noreferrer"
