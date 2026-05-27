@@ -59,6 +59,7 @@ export default function CreditView({
 
                     <p className="font-bold">Icons</p>
                     <p>This work includes icons from <Link href="https://fontawesome.com" target="_blank" rel="noopener noreferrer">Font Awesome</Link>.</p>
+                    <a href="https://www.producthunt.com/products/pond-extended?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-pond-extended" target="_blank" rel="noopener noreferrer"><img alt="Pond Extended - Simple duck fighting game for programming beginners | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1157085&amp;theme=neutral&amp;t=1779880415768"></a>
                 </div>
             </div>
         </div>
