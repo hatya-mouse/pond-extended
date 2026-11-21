@@ -12,7 +12,7 @@
 
 Example Pond script can be found in [my repository](https://github.com/hatya-mouse/pond-examples/).
 
-Play now at [https://pond-extended.hatya.dev](https://pond-extended.hatya.dev/)
+Play now at [https://pond-extended.hacha.dev](https://pond-extended.hacha.dev/)
 
 ## 🎯 Features
 
