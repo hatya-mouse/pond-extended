@@ -1,13 +1,11 @@
 import type { NextConfig } from "next";
 import path from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+    allowedDevOrigins: ["127.0.2.2"],
     webpack: (config) => {
         config.resolve.alias["@codemirror/state"] = path.resolve(
-            __dirname,
+            process.cwd(),
             "node_modules/@codemirror/state",
         );
         return config;
@@ -16,12 +14,8 @@ const nextConfig: NextConfig = {
         resolveAlias: {
             "@codemirror/state": "./node_modules/@codemirror/state",
         },
-    }
+    },
 };
 
 export default nextConfig;
-
-module.exports = {
-    allowedDevOrigins: ['127.0.2.2'],
-};
 
